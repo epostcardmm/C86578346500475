@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Please Forgive Me ❤️ | Vibrant E-Postcard</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Canvas Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts - Padauk for Myanmar typography & Dancing Script for handwritten aesthetic -->
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Padauk:wght@400;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Padauk', 'Outfit', sans-serif;
+      overflow-x: hidden;
+    }
+
+    .handwriting {
+      font-family: 'Dancing Script', 'Padauk', cursive;
+    }
+
+    /* Vibrant animated gradient mesh background */
+    .animated-bg {
+      background: linear-gradient(-45deg, #ff758c, #ff7eb3, #a855f7, #3b82f6, #06b6d4, #10b981, #f59e0b, #ec4899);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Floating glowing elements */
+    .bg-hearts {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .heart-particle {
+      position: absolute;
+      bottom: -10vh;
+      animation: floatUp linear infinite;
+      user-select: none;
+      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) rotate(0deg) scale(0.7);
+        opacity: 0.9;
+      }
+      50% {
+        opacity: 1;
+        filter: drop-shadow(0 0 18px rgba(255, 105, 180, 0.9));
+      }
+      100% {
+        transform: translateY(-115vh) rotate(360deg) scale(1.3);
+        opacity: 0;
+      }
+    }
+
+    /* Pop in keyframe */
+    .animate-pop {
+      animation: popIn 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.8) translateY(10px); opacity: 0; }
+      100% { transform: scale(1) translateY(0); opacity: 1; }
+    }
+
+    /* Envelope Float Down Animation */
+    .animate-float-down {
+      animation: floatDownFromTop 3.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+
+    @keyframes floatDownFromTop {
+      0% {
+        top: -220px;
+        transform: translateX(-50%) rotate(-15deg);
+        opacity: 0;
+      }
+      40% {
+        transform: translateX(-45%) rotate(12deg);
+        opacity: 1;
+      }
+      70% {
+        transform: translateX(-52%) rotate(-6deg);
+      }
+      100% {
+        top: 35%;
+        transform: translateX(-50%) rotate(0deg);
+        opacity: 1;
+      }
+    }
+
+    /* Gentle Floating Animation */
+    .animate-bounce-gentle {
+      animation: bounceGentle 1.4s infinite alternate ease-in-out;
+    }
+
+    @keyframes bounceGentle {
+      0% { transform: translateY(0) scale(1); }
+      100% { transform: translateY(-10px) scale(1.05); }
+    }
+
+    /* Rainbow Glowing Card Border */
+    .rainbow-border {
+      position: relative;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 2rem;
+    }
+
+    .rainbow-border::before {
+      content: '';
+      position: absolute;
+      top: -4px;
+      left: -4px;
+      right: -4px;
+      bottom: -4px;
+      background: linear-gradient(45deg, #ff007f, #7928ca, #00dfd8, #ff007f);
+      background-size: 300% 300%;
+      border-radius: 2.2rem;
+      z-index: -1;
+      animation: borderGlow 4s linear infinite;
+      filter: blur(8px);
+      opacity: 0.8;
+    }
+
+    @keyframes borderGlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Paper Texture for Letter Modal */
+    .paper-texture {
+      background: #fffefb;
+      background-image: 
+        radial-gradient(#e5d7c5 0.8px, transparent 0.8px),
+        radial-gradient(#e5d7c5 0.8px, #fffefb 0.8px);
+      background-size: 24px 24px;
+      background-position: 0 0, 12px 12px;
+      box-shadow: 
+        0 20px 50px rgba(0, 0, 0, 0.25),
+        inset 0 0 80px rgba(245, 225, 200, 0.4);
+    }
+
+    /* Pulse Glow for Buttons */
+    .glow-btn-yes {
+      box-shadow: 0 0 20px rgba(244, 63, 94, 0.6), 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    .glow-btn-yes:hover {
+      box-shadow: 0 0 30px rgba(244, 63, 94, 0.9), 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Sparkle Star Animations */
+    .sparkle-icon {
+      animation: spinSparkle 3s linear infinite;
+    }
+    @keyframes spinSparkle {
+      0% { transform: rotate(0deg) scale(1); }
+      50% { transform: rotate(180deg) scale(1.2); }
+      100% { transform: rotate(360deg) scale(1); }
+    }
+  </style>
+</head>
+
+<body class="animated-bg min-h-screen flex items-center justify-center p-4 relative overflow-x-hidden selection:bg-pink-500 selection:text-white">
+
+  <!-- Background Hearts Particle Container -->
+  <div id="heartsContainer" class="bg-hearts"></div>
+
+  <!-- Decorative Floating Background Orbs -->
+  <div class="absolute top-10 left-10 w-32 h-32 bg-yellow-300 rounded-full blur-3xl opacity-40 animate-pulse pointer-events-none"></div>
+  <div class="absolute bottom-10 right-10 w-40 h-40 bg-pink-400 rounded-full blur-3xl opacity-40 animate-pulse pointer-events-none"></div>
+
+  <!-- Main Interactive Postcard Container -->
+  <main class="relative z-10 w-full max-w-xs sm:max-w-sm rainbow-border backdrop-blur-xl shadow-2xl p-4 sm:p-5 text-center transition-all duration-300 my-auto">
+    
+    <!-- Header Decor Badges -->
+    <div class="flex items-center justify-between mb-3 px-1 text-rose-500 font-bold text-[10px] sm:text-xs tracking-wider">
+      <span class="bg-rose-100/80 px-2.5 py-0.5 rounded-full border border-rose-200 shadow-sm backdrop-blur-sm flex items-center gap-1">
+        <i class="fa-solid fa-sparkles text-amber-400 sparkle-icon"></i> Express Postcard
+      </span>
+      <span class="bg-pink-100/80 px-2.5 py-0.5 rounded-full border border-pink-200 shadow-sm backdrop-blur-sm flex items-center gap-1">
+        💖 Special Edition
+      </span>
+    </div>
+
+    <div id="contentBox" class="flex flex-col items-center justify-center min-h-[320px]">
+      
+      <!-- GIF Display Container with Vibrant Frame -->
+      <div class="relative w-36 h-36 sm:w-44 sm:h-44 mb-4 rounded-2xl overflow-hidden shadow-lg border-2 border-white/80 bg-gradient-to-tr from-pink-100 to-rose-50 p-1 group">
+        <div class="w-full h-full rounded-xl overflow-hidden relative">
+          <img id="gifImage" 
+               src="https://media1.tenor.com/m/rokauCI9nPYAAAAC/crying-sad.gif" 
+               alt="Apology Cute GIF" 
+               class="w-full h-full object-cover transition-all duration-300 group-hover:scale-105">
+          <div class="absolute inset-0 ring-1 ring-black/5 rounded-xl pointer-events-none"></div>
+        </div>
+      </div>
+
+      <!-- Myanmar Question Heading -->
+      <h1 id="questionText" class="text-lg sm:text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-rose-600 via-pink-600 to-purple-600 mb-4 leading-relaxed min-h-[3rem] flex items-center justify-center px-1 drop-shadow-sm">
+        စိတ်မဆိုးပါနဲ့တော့နော်... ❤️
+      </h1>
+
+      <!-- Interactive Buttons -->
+      <div id="buttonGroup" class="flex flex-wrap items-center justify-center gap-3 w-full">
+        <!-- Yes Button -->
+        <button id="yesBtn" onclick="handleYesClick()" 
+                class="glow-btn-yes bg-gradient-to-r from-rose-500 via-pink-500 to-purple-500 hover:from-rose-600 hover:to-purple-600 text-white font-extrabold py-2.5 px-6 rounded-full transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 text-sm sm:text-base flex items-center gap-1.5 cursor-pointer border-2 border-white/50">
+          <span>Yes</span> 💕
+        </button>
+
+        <!-- No Button -->
+        <button id="noBtn" onclick="handleNoClick()" 
+                class="bg-white/80 hover:bg-rose-50 text-slate-700 hover:text-rose-600 font-bold py-2.5 px-5 rounded-full shadow-sm hover:shadow-md border border-slate-200/80 transform active:scale-95 transition-all duration-200 text-xs sm:text-sm flex items-center gap-1 cursor-pointer backdrop-blur-sm">
+          <span>No</span> 🥺
+        </button>
+      </div>
+
+      <!-- Stage Dots Indicator -->
+      <div class="mt-5 flex gap-1.5 justify-center items-center" id="dotsContainer">
+        <span class="dot w-5 h-2 rounded-full bg-gradient-to-r from-rose-500 to-pink-500 transition-all duration-300 shadow-sm"></span>
+        <span class="dot w-2 h-2 rounded-full bg-rose-200 transition-all duration-300"></span>
+        <span class="dot w-2 h-2 rounded-full bg-rose-200 transition-all duration-300"></span>
+        <span class="dot w-2 h-2 rounded-full bg-rose-200 transition-all duration-300"></span>
+        <span class="dot w-2 h-2 rounded-full bg-rose-200 transition-all duration-300"></span>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Floating Envelope Container (Appears after clicking Yes) -->
+  <div id="floatingPostcard" 
+       onclick="openApologyLetter()" 
+       class="fixed left-1/2 -translate-x-1/2 z-40 hidden cursor-pointer flex flex-col items-center group">
+    
+    <!-- Transparent Animated Envelope Graphic -->
+    <div class="relative w-36 h-36 sm:w-44 sm:h-44 filter drop-shadow-[0_10px_20px_rgba(244,63,94,0.35)] transform group-hover:scale-105 transition-transform duration-300">
+      <img src="https://i.ibb.co/fdQX2bkL/pngegg-8.png" 
+           alt="Floating Envelope" 
+           class="w-full h-full object-contain">
+    </div>
+
+    <!-- Animated Tap Badge -->
+    <div class="bg-gradient-to-r from-amber-400 to-rose-500 text-white text-xs font-extrabold px-4 py-1.5 rounded-full shadow-lg -mt-4 animate-bounce-gentle border border-white flex items-center gap-1.5">
+      <i class="fa-solid fa-envelope-open-text text-xs"></i> Click to Open ✨
+    </div>
+  </div>
+
+  <!-- Apology Letter Modal Overlay -->
+  <div id="letterModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex items-center justify-center p-3 opacity-0 pointer-events-none transition-opacity duration-300">
+    
+    <!-- Paper Letter Container -->
+    <div id="paperLetter" class="paper-texture border-2 border-amber-200 rounded-3xl w-full max-w-xs p-4 sm:p-5 relative transform scale-90 transition-transform duration-300 shadow-2xl">
+      
+      <!-- Close Modal Button -->
+      <button onclick="closeApologyLetter()" class="absolute top-3 right-3 text-slate-400 hover:text-rose-500 text-lg font-bold w-8 h-8 rounded-full bg-rose-50/80 hover:bg-rose-100 border border-rose-200/50 flex items-center justify-center transition-colors shadow-sm">
+        &times;
+      </button>
+
+      <!-- Stamp Decor -->
+      <div class="absolute top-3.5 right-12 border-2 border-dashed border-rose-300 rounded-md px-2 py-0.5 text-[10px] text-rose-500 font-bold transform rotate-6 bg-rose-50/70 shadow-sm flex items-center gap-0.5">
+        <span>💌 FOR YOU</span>
+      </div>
+
+      <!-- Letter Header -->
+      <div class="text-rose-600 font-bold text-lg sm:text-xl mb-3 border-b-2 border-rose-100 pb-2 flex items-center gap-1.5">
+        <span>To my lovely person...</span> 🌸
+      </div>
+
+      <!-- Letter Body Content -->
+      <div class="text-slate-700 text-xs sm:text-sm leading-relaxed space-y-2.5 my-3 font-medium">
+        <p class="first-letter:text-base first-letter:font-bold first-letter:text-rose-500">
+        </p> 
+          ကိုယ့်ကြောင့် စိတ်အခန့်မသင့်ဖြစ်သွားခဲ့ရင် တကယ်တောင်းပန်ပါတယ်နော်... 🥺
+        <p>
+          နောက်တစ်ခါ စိတ်မညစ်ရအောင် ပိုပြီး ဂရုစိုက်ပါ့မယ်နော်။ စိတ်ဆိုးပြေပြီး ကိုယ့်ကို ခွင့်လွှတ်ပေးပါနော်... ✨
+        </p>
+      </div>
+
+      <!-- Footer & Signature -->
+      <div class="mt-4 pt-3 border-t border-rose-100 text-right">
+        <p class="text-slate-500 text-xs font-sans">Love you so much...</p>
+        <p class="text-rose-600 font-bold text-base sm:text-lg handwriting mt-0.5">
+          Always your💕
+        </p>
+      </div>
+
+      <!-- Bottom Close / Accept Button -->
+      <div class="mt-4 text-center">
+        <button onclick="handleFinalAcceptClick()" class="bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white font-bold px-6 py-2 rounded-full shadow-lg hover:shadow-rose-300/50 transition-all text-xs sm:text-sm border border-white/40">
+          ကျေနပ်ပြီ ခွင့်လွှတ်လိုက်ပြီ ❤️
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const FORMSPREE_URL = "";
+
+    // 5 Questions and Matching Transparent/Cute GIFs Data
+    const apologyData = [
+      {
+        question: "စိတ်မဆိုးပါနဲ့တော့နော်... ❤️",
+        gif: "https://media1.tenor.com/m/rokauCI9nPYAAAAC/crying-sad.gif"
+      },
+      {
+        question: "တကယ်ပဲမပြေသေးဘူးလား... 🥺",
+        gif: "https://media.tenor.com/RowKT44Zuf0AAAAi/ngoclan.gif"
+      },
+      {
+        question: "ဆိုးပါနဲ့တော့ နော်နော်...🌸",
+        gif: "https://media.tenor.com/fIKMkwShzkUAAAAi/cry.gif"
+      },
+      {
+        question: "စိတ်ကောက်ပြေတော့နော် ✨",
+        gif: "https://media1.tenor.com/m/jaZoO-lfp94AAAAC/gitapro3-gitagita.gif"
+      },
+      {
+        question: "ကျေနပ်လိုက်ပါတော့ 😤❤️",
+        gif: "https://media.tenor.com/mxFUB2neXSQAAAAi/rabbits.gif"
+      }
+    ];
+
+    let currentIndex = 0;
+    let yesScale = 1;
+    let noCount = 0;
+
+    // Helper function to send email notification via Formspree
+    function sendFormspreeData(data) {
+      fetch(FORMSPREE_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(data)
+      }).catch(err => console.log("Formspree Send Error:", err));
+    }
+
+    // Background Floating Hearts Animation Generator
+    function createHearts() {
+      const heartsContainer = document.getElementById('heartsContainer');
+      const heartIcons = ['❤️', '💖', '🌸', '✨', '💕', '💗', '🧸', '🌺', '⭐'];
+
+      for (let i = 0; i < 28; i++) {
+        const heart = document.createElement('div');
+        heart.classList.add('heart-particle');
+        heart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+        heart.style.animationDelay = (Math.random() * 5) + 's';
+        heart.style.fontSize = (Math.random() * 1.5 + 1.2) + 'rem';
+        heartsContainer.appendChild(heart);
+      }
+    }
+
+    // Handle "No" Button Click
+    function handleNoClick() {
+      noCount++;
+      currentIndex = (currentIndex + 1) % apologyData.length;
+
+      const gifImage = document.getElementById('gifImage');
+      const questionText = document.getElementById('questionText');
+      const yesBtn = document.getElementById('yesBtn');
+
+      // Trigger animation reset
+      gifImage.parentElement.parentElement.classList.remove('animate-pop');
+      void gifImage.parentElement.parentElement.offsetWidth; // Reflow
+      gifImage.parentElement.parentElement.classList.add('animate-pop');
+
+      // Update image & text
+      gifImage.src = apologyData[currentIndex].gif;
+      questionText.innerText = apologyData[currentIndex].question;
+
+      // Make Yes button grow larger each time
+      yesScale += 0.12;
+      if (yesScale > 1.8) yesScale = 1.8;
+      yesBtn.style.transform = `scale(${yesScale})`;
+
+      updateDots();
+    }
+
+    // Update Stage Dots Indicator
+    function updateDots() {
+      const dots = document.querySelectorAll('.dot');
+      dots.forEach((dot, idx) => {
+        if (idx === currentIndex) {
+          dot.className = 'dot w-5 h-2 rounded-full bg-gradient-to-r from-rose-500 to-pink-500 transition-all duration-300 shadow-sm';
+        } else {
+          dot.className = 'dot w-2 h-2 rounded-full bg-rose-200 transition-all duration-300';
+        }
+      });
+    }
+
+    // Handle "Yes" Button Click
+    function handleYesClick() {
+      // Send First Email: Yes Clicked + Total No Clicks Count
+      sendFormspreeData({
+        event: "Yes Clicked",
+        message: "Yes ခလုတ်ကို နှိပ်လိုက်ပါပြီ!",
+        totalNoClicks: noCount,
+        time: new Date().toLocaleString()
+      });
+
+      const contentBox = document.getElementById('contentBox');
+
+      // Dynamic Vibrant Confetti Burst
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#ff4d6d', '#ff758f', '#ffb3c1', '#a855f7', '#3b82f6', '#fbbf24']
+      });
+
+      // Secondary delay explosion
+      setTimeout(() => {
+        confetti({
+          particleCount: 50,
+          angle: 60,
+          spread: 50,
+          origin: { x: 0 }
+        });
+        confetti({
+          particleCount: 50,
+          angle: 120,
+          spread: 50,
+          origin: { x: 1 }
+        });
+      }, 250);
+
+      // Celebration Card Content
+      contentBox.innerHTML = `
+        <div class="animate-pop flex flex-col items-center">
+          <div class="relative w-36 h-36 sm:w-44 sm:h-44 mb-4 rounded-2xl overflow-hidden shadow-xl border-2 border-white/80 bg-pink-50 p-1">
+            <img src="https://media.tenor.com/iHbCAIOwnFAAAAAi/mwah-kitty.gif" 
+                 alt="Happy Celebrative Hug GIF" 
+                 class="w-full h-full object-cover rounded-xl">
+          </div>
+
+          <h2 class="text-xl sm:text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-purple-600 mb-1 leading-snug">
+            Yayyy! စိတ်ဆိုးပြေသွားပြီ! 🥰💖
+          </h2>
+
+          <p class="text-xs sm:text-sm text-rose-500 font-semibold mb-4">
+            ရော့..အာဘွား *1000 ✨
+          </p>
+
+          <!-- Epostcard Trigger Button -->
+          <button onclick="triggerFloatingPostcard()" 
+                  class="bg-gradient-to-r from-rose-500 via-pink-500 to-purple-600 hover:from-rose-600 hover:to-purple-700 text-white font-extrabold py-2.5 px-6 rounded-full shadow-lg hover:shadow-rose-400/50 transform hover:-translate-y-0.5 transition-all duration-300 text-xs sm:text-sm flex items-center gap-1.5 cursor-pointer border border-white/50 animate-bounce">
+            <i class="fa-solid fa-paper-plane text-xs"></i> Epostcard for you
+          </button>
+        </div>
+      `;
+    }
+
+    // Trigger Envelope Float Down Sequence
+    function triggerFloatingPostcard() {
+      const floatingEnv = document.getElementById('floatingPostcard');
+      floatingEnv.classList.remove('hidden');
+      floatingEnv.classList.add('animate-float-down');
+    }
+
+    // Open Paper Modal Letter
+    function openApologyLetter() {
+      const modal = document.getElementById('letterModal');
+      const paper = document.getElementById('paperLetter');
+
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      paper.classList.remove('scale-90');
+      paper.classList.add('scale-100');
+
+      // Burst confetti when opening letter
+      confetti({
+        particleCount: 70,
+        spread: 70,
+        origin: { y: 0.5 },
+        colors: ['#ff4d6d', '#ffd166', '#06d6a0', '#118ab2']
+      });
+    }
+
+    // Close Paper Modal Letter
+    function closeApologyLetter() {
+      const modal = document.getElementById('letterModal');
+      const paper = document.getElementById('paperLetter');
+
+      paper.classList.remove('scale-100');
+      paper.classList.add('scale-90');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    // Handle Final Acceptance Button Click in Letter Modal
+    function handleFinalAcceptClick() {
+      // Send Second Email: Final Forgiveness Confirmation
+      sendFormspreeData({
+        event: "Final Forgiveness Accepted",
+        message: "'ကျေနပ်ပြီ ခွင့်လွှတ်လိုက်ပြီ' ဆိုတဲ့ ခလုတ်ကို နှိပ်ပြီး စိတ်ဆိုးပြေသွားပါပြီ!",
+        time: new Date().toLocaleString()
+      });
+
+      closeApologyLetter();
+    }
+
+    // Initialize particle effects on page load
+    window.onload = function() {
+      createHearts();
+    };
+  </script>
+</body>
+</html>
